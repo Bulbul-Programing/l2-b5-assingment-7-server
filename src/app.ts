@@ -3,6 +3,11 @@ import cors from 'cors';
 import compression from 'compression';
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import "./config/passport";
+import expressSession from 'express-session';
+import { envVars } from './envConfig/env';
 
 const app = express()
 
@@ -13,7 +18,18 @@ app.use(
         credentials: true,
     })
 );
+
+app.use(expressSession({
+    secret: envVars.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+}))
+
 app.use(compression())
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(cookieParser())
+
 app.use(express.json())
 
 // Default route for testing

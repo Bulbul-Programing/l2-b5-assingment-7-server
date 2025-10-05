@@ -6,7 +6,7 @@ import AppError from '../error/AppError';
 import type { NextFunction, Request, Response } from 'express';
 import type { TErrorSource } from '../interface/error';
 import { configDotenv } from 'dotenv';
-import envConfig from '../envConfig';
+import { envVars } from '../envConfig/env';
 
 const globalErrorHandler = (
   err: any,
@@ -55,7 +55,7 @@ const globalErrorHandler = (
     success: false,
     message,
     errorSources,
-    errorStack: envConfig.NODE_ENV === 'development' ? err?.stack : null,
+    errorStack: envVars.NODE_ENV === 'development' ? err?.stack : null,
   });
 };
 

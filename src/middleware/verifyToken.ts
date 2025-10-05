@@ -2,13 +2,13 @@ import type { NextFunction, Request, Response } from "express";
 import type { TUserRole } from "../modules/user/TUser";
 import catchAsync from "../Utils/catchAsync";
 import AppError from "../error/AppError";
-import envConfig from "../envConfig";
 import jwt, { type JwtPayload } from 'jsonwebtoken';
+import { envVars } from "../envConfig/env";
 
 const verifyToken = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const tokenWithBearer = req.headers.authorization;
-    
+
     if (!tokenWithBearer) {
       throw new AppError(401, 'You are not authorized!');
     }
@@ -21,7 +21,7 @@ const verifyToken = (...requiredRoles: TUserRole[]) => {
 
     const decoded = jwt.verify(
       token,
-      envConfig.accessTokenSecrete as string,
+      envVars.ACCESS_TOKEN_SECRETE as string,
     ) as JwtPayload;
 
     // const { email, role } = decoded;

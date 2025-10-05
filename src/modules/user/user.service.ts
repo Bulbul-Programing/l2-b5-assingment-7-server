@@ -1,5 +1,5 @@
 import { prisma } from "../../config/db"
-import envConfig from "../../envConfig";
+import { envVars } from "../../envConfig/env";
 import AppError from "../../error/AppError"
 import type { TUser } from "./TUser"
 import bcrypt from 'bcrypt';
@@ -16,7 +16,7 @@ const createNewUser = async (payload: TUser) => {
     }
 
     if (payload.password) {
-        const hashPassword = await bcrypt.hash(payload.password as string, Number(envConfig.bcryptSaltRounds));
+        const hashPassword = await bcrypt.hash(payload.password as string, Number(envVars.BCRYPT_ROUNDS));
         payload.password = hashPassword
     }
 

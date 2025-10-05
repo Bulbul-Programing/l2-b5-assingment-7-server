@@ -1,5 +1,4 @@
 import { prisma } from "../../config/db"
-import envConfig from "../../envConfig";
 import AppError from "../../error/AppError"
 import type { TBlog } from "./blog.interface";
 import bcrypt from 'bcrypt';
