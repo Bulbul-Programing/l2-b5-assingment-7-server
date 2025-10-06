@@ -15,6 +15,7 @@ interface EnvConfig {
     REFRESH_TOKEN_EXPIRE: string
     DATABASE_URL: string,
     EXPRESS_SESSION_SECRET: string
+    FRONTEND_URL: string
 }
 
 const localEnvVariables = (): EnvConfig => {
@@ -30,7 +31,8 @@ const localEnvVariables = (): EnvConfig => {
         'ACCESS_TOKEN_EXPIRE',
         'REFRESH_TOKEN_EXPIRE',
         'DATABASE_URL',
-        'EXPRESS_SESSION_SECRET'
+        'EXPRESS_SESSION_SECRET',
+        'FRONTEND_URL'
     ]
 
     requiredEnvVariables.forEach(envVar => {
@@ -52,6 +54,7 @@ const localEnvVariables = (): EnvConfig => {
         REFRESH_TOKEN_EXPIRE: process.env.REFRESH_TOKEN_EXPIRE as string,
         DATABASE_URL: process.env.DATABASE_URL as string,
         EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
+        FRONTEND_URL: process.env.FRONTEND_URL as string,
     }
 }
 

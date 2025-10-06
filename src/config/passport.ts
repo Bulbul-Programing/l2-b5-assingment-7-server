@@ -3,7 +3,6 @@ import { Strategy as GoogleStrategy, type VerifyCallback } from 'passport-google
 import { envVars } from "../envConfig/env";
 import { prisma } from "./db";
 
-
 passport.use(
     new GoogleStrategy({
         clientID: envVars.GOOGLE_CLIENT_ID,
@@ -40,3 +39,20 @@ passport.use(
         }
     })
 )
+
+passport.serializeUser((user: any, done) => {
+    done(null, user.id)
+});
+
+passport.deserializeUser(async (id: string, done) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: Number(id) }
+        });
+
+        done(null, user);
+    } catch (error) {
+        console.error("Deserialize error:", error);
+        done(error);
+    }
+});
