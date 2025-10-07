@@ -5,10 +5,10 @@ import bcrypt from 'bcrypt';
 
 const creteNewBlog = async (payload: TBlog) => {
     if (!payload.slug) {
-        const splitTitle = payload.title.split(' ').join('-')
+        const splitTitle = payload.title.split(' ').join('-').toLocaleLowerCase()
         payload.slug = splitTitle
     }
-    console.log(payload);
+    
     const result = await prisma.blog.create({
         data: payload
     })

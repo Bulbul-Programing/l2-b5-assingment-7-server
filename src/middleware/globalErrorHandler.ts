@@ -7,6 +7,8 @@ import type { NextFunction, Request, Response } from 'express';
 import type { TErrorSource } from '../interface/error';
 import { configDotenv } from 'dotenv';
 import { envVars } from '../envConfig/env';
+import { Prisma } from '@prisma/client';
+import { handlePrismaClientError } from '../error/handlePrismaClientError';
 
 const globalErrorHandler = (
   err: any,
@@ -22,34 +24,49 @@ const globalErrorHandler = (
       message: 'something went wrong!',
     },
   ];
-  
+
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    const simpleError = handlePrismaClientError(err)
+
+    statusCode = simpleError.statusCode;
+    message = simpleError.message;
+    errorSources = simpleError.errorSources;
+    
+    return res.status(statusCode).json({
+      success: false,
+      message,
+      errorSources,
+      errorStack: envVars.NODE_ENV === 'development' ? err?.stack : null,
+    });
+  }
+
   if (err instanceof ZodError) {
     const simpleError = handleZodError(err);
-      statusCode = simpleError.statusCode
-      message = simpleError.message,
+    statusCode = simpleError.statusCode
+    message = simpleError.message,
       errorSources = simpleError.errorSources;
   }
-  else if(err?.code === 1100){
+  else if (err?.code === 1100) {
     const simpleError = handleDuplicateError(err)
     statusCode = simpleError?.statusCode,
-    message = simpleError?.message,
-    errorSources = simpleError?.errorSources
+      message = simpleError?.message,
+      errorSources = simpleError?.errorSources
   }
-  else if(err instanceof AppError){
+  else if (err instanceof AppError) {
     statusCode = err?.statusCode,
-    message = err?.message,
-    errorSources = [{
-      path : '',
-      message : err.message
-    }]
+      message = err?.message,
+      errorSources = [{
+        path: '',
+        message: err.message
+      }]
   }
-  else if(err instanceof Error){
+  else if (err instanceof Error) {
     statusCode = statusCode,
-    message = err?.message,
-    errorSources = [{
-      path : '',
-      message : err.message
-    }]
+      message = err?.message,
+      errorSources = [{
+        path: '',
+        message: err.message
+      }]
   }
   return res.status(statusCode).json({
     success: false,

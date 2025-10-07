@@ -38,7 +38,7 @@ model Blog {
   excerpt    String?
   content    String
   coverImage String
-  published  Boolean  @default(false)
+  published  Boolean  @default(true)
   author     User     @relation(fields: [authorId], references: [id])
   authorId   Int
   createdAt  DateTime @default(now())

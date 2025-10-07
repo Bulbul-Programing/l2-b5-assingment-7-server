@@ -14,7 +14,7 @@ const loginUser = async (payload: { email: string, password: string }) => {
     }
 
     if (isUserExist.password === null) {
-        throw new AppError(400, 'Please use google login')
+        throw new AppError(400, 'User not found, Please try to google login')
     }
 
     const isPasswordMatch = await isPasswordMatched(payload.password, isUserExist.password)
