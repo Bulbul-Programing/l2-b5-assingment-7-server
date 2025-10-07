@@ -48,7 +48,7 @@ model Blog {
 model Project {
   id          Int      @id @default(autoincrement())
   title       String
-  slug        String?
+  slug        String?  @unique
   description String
   thumbnail   String
   liveUrl     String
