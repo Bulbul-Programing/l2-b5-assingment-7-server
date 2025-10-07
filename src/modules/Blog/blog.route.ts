@@ -1,10 +1,14 @@
 import express from 'express';
 import { validateRequest } from '../../middleware/validateRequest';
-import { createBlogValidateSchema } from './blog.validation';
+import { createBlogValidateSchema, updateBlogValidateSchema } from './blog.validation';
 import { blogController } from './blog.controller';
 
 const route = express.Router()
 
 route.post('/create', validateRequest(createBlogValidateSchema), blogController.creteNewBlog)
+route.get('/', blogController.getAllBlogs)
+route.delete('/:id', blogController.deleteBlog)
+route.get('/:slagId', blogController.getSingleBlog)
+route.put('/:blogId', validateRequest(updateBlogValidateSchema), blogController.updateBlog)
 
 export const blogRouter = route
