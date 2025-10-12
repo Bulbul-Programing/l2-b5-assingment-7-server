@@ -31,10 +31,16 @@ const getAllUser = async () => {
     return result
 }
 
-const getSingleUser = async (userId: number) => {
+const getSingleUser = async (email: string) => {
     const isExistUser = await prisma.user.findUnique({
         where: {
-            id: userId
+            email: email
+        },
+        select : {
+            id : true,
+            email : true,
+            name : true,
+            role : true,
         }
     })
     if (!isExistUser) {

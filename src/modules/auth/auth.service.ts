@@ -22,7 +22,7 @@ const loginUser = async (payload: { email: string, password: string }) => {
     if (!isPasswordMatch) {
         throw new AppError(403, 'Password do not matched');
     }
-    console.log('passed');
+
     const jwtPayload = {
         userId: isUserExist.id,
         email: isUserExist.email,

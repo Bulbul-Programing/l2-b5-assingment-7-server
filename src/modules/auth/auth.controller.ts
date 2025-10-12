@@ -22,6 +22,24 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const logout = catchAsync(async (req: Request, res: Response) => {
+
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.status(200).json({
+        success: true,
+        massage: 'User Logged Out Successfully'
+    })
+})
+
 const googleCallbackController = catchAsync(async (req: Request, res: Response) => {
     let redirectTo = req.query.state ? req.query.state as string : ''
 
@@ -34,7 +52,7 @@ const googleCallbackController = catchAsync(async (req: Request, res: Response) 
     }
 
     const tokenInfo = createUserTokens(user)
-    console.log(tokenInfo);
+    
     setAuthCookie(res, tokenInfo)
 
     res.redirect(`${envVars.FRONTEND_URL}/${redirectTo}`)
@@ -44,5 +62,6 @@ const googleCallbackController = catchAsync(async (req: Request, res: Response) 
 
 export const authController = {
     loginUser,
+    logout,
     googleCallbackController
 }

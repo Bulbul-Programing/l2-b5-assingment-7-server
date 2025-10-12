@@ -6,31 +6,34 @@ import globalErrorHandler from './middleware/globalErrorHandler';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import "./config/passport";
-import expressSession from 'express-session';
+import session from 'express-session';
 import { envVars } from './envConfig/env';
 
 const app = express()
-
-// middleware
+app.use(cookieParser())
+app.use(express.json())
+app.use(compression())
 app.use(
     cors({
         origin: "http://localhost:3000",
         credentials: true,
-    })
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+    },)
 );
 
-app.use(expressSession({
+app.use(session({
     secret: envVars.EXPRESS_SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none"
+    }
 }))
 
-app.use(compression())
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(cookieParser())
-
-app.use(express.json())
 
 // Default route for testing
 app.get("/", (req: Request, res: Response) => {

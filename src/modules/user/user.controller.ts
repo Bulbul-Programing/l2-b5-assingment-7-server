@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 import catchAsync from "../../Utils/catchAsync"
 import { userService } from "./user.service";
+import AppError from "../../error/AppError";
 
 const createNewUser = catchAsync(async (req: Request, res: Response) => {
     const userData = req.body
@@ -22,8 +23,8 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
-    const userId = req.params.id
-    const result = await userService.getSingleUser(Number(userId));
+    const userInfo = req.user as any
+    const result = await userService.getSingleUser(userInfo.email);
     res.status(200).json({
         success: true,
         massage: 'user data retrieve successfully',

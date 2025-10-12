@@ -6,7 +6,7 @@ import { envVars } from '../../envConfig/env';
 const router = express.Router()
 
 router.post('/login', authController.loginUser)
-
+router.post("/logout", authController.logout)
 
 // Google Login
 router.get('/google', async (req: Request, res: Response, next: NextFunction) => {
