@@ -1,10 +1,18 @@
 import type { Request, Response } from "express";
 import catchAsync from "../../Utils/catchAsync";
 import { blogService } from "./blog.service";
+import type { JwtPayload } from "jsonwebtoken";
 
 const creteNewBlog = catchAsync(async (req: Request, res: Response) => {
     const blogData = req.body
-    const result = await blogService.creteNewBlog(blogData);
+    const { userId } = req.user as JwtPayload
+
+    const payload = {
+        ...blogData,
+        authorId: userId
+    }
+ 
+    const result = await blogService.creteNewBlog(payload);
     res.status(200).json({
         success: true,
         massage: 'Blog create successfully',

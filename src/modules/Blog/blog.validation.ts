@@ -8,8 +8,7 @@ export const createBlogValidateSchema = z.object({
         excerpt: z.string().optional(),
         content: z.string().min(1, "Content is required"),
         coverImage: z.string().url("Cover image must be a valid URL"),
-        published: z.boolean().optional().default(false),
-        authorId: z.number().int("Author ID must be an integer"),
+        published: z.boolean().optional().default(true)
     })
 });
 
@@ -19,6 +18,6 @@ export const updateBlogValidateSchema = z.object({
         excerpt: z.string().optional(),
         content: z.string().min(1, "Content is required").optional(),
         coverImage: z.string().url("Cover image must be a valid URL").optional(),
-        published: z.boolean().optional().default(false)
+        published: z.boolean().optional().default(true)
     })
 });

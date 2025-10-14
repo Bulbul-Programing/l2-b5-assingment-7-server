@@ -36,7 +36,7 @@ model Blog {
   title      String
   slug       String   @unique
   excerpt    String?
-  content    String
+  content    String @db.Text
   coverImage String
   published  Boolean  @default(true)
   author     User     @relation(fields: [authorId], references: [id])

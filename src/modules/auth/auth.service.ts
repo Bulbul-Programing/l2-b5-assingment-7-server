@@ -24,11 +24,11 @@ const loginUser = async (payload: { email: string, password: string }) => {
     }
 
     const jwtPayload = {
-        userId: isUserExist.id,
+        id: isUserExist.id,
         email: isUserExist.email,
         role: isUserExist.role
     }
-
+    
     const tokenInfo = createUserTokens(jwtPayload)
     return tokenInfo
 }

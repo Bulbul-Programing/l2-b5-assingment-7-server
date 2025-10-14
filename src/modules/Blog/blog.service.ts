@@ -9,6 +9,16 @@ const creteNewBlog = async (payload: TBlog) => {
         payload.slug = splitTitle
     }
 
+    const isExistUser = prisma.user.findUnique({
+        where: {
+            id: payload.authorId
+        }
+    })
+
+    if (!isExistUser) {
+        throw new AppError(404, 'Your are not authorize this action!')
+    }
+
     const result = await prisma.blog.create({
         data: payload
     })
