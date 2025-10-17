@@ -36,13 +36,14 @@ const getSingleUser = async (email: string) => {
         where: {
             email: email
         },
-        select : {
-            id : true,
-            email : true,
-            name : true,
-            role : true,
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
         }
     })
+
     if (!isExistUser) {
         throw new AppError(404, 'User Not Found!')
     }

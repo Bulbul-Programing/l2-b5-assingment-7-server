@@ -6,7 +6,7 @@ import verifyToken from '../../middleware/verifyToken';
 
 const route = express.Router()
 
-route.post('/create',verifyToken('ADMIN', 'OWNER'), validateRequest(createBlogValidateSchema), blogController.creteNewBlog)
+route.post('/create', validateRequest(createBlogValidateSchema), blogController.creteNewBlog)
 route.get('/', blogController.getAllBlogs)
 route.delete('/:id', blogController.deleteBlog)
 route.get('/:slagId', blogController.getSingleBlog)

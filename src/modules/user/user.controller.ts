@@ -5,6 +5,7 @@ import AppError from "../../error/AppError";
 
 const createNewUser = catchAsync(async (req: Request, res: Response) => {
     const userData = req.body
+    console.log(userData);
     const result = await userService.createNewUser(userData);
     res.status(200).json({
         success: true,
@@ -23,8 +24,11 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
 })
 
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
-    const userInfo = req.user as any
-    const result = await userService.getSingleUser(userInfo.email);
+    const userEmail = req.params.email
+    if (!userEmail) {
+        throw new AppError(401, 'Email Not found!')
+    }
+    const result = await userService.getSingleUser(userEmail);
     res.status(200).json({
         success: true,
         massage: 'user data retrieve successfully',
