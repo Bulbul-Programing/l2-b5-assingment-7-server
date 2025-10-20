@@ -5,7 +5,6 @@ import AppError from "../../error/AppError";
 
 const createNewUser = catchAsync(async (req: Request, res: Response) => {
     const userData = req.body
-    console.log(userData);
     const result = await userService.createNewUser(userData);
     res.status(200).json({
         success: true,
