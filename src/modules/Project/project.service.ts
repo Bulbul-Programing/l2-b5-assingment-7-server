@@ -63,9 +63,6 @@ const deleteProject = async (ProjectId: string) => {
 }
 
 const updateProject = async (payload: Partial<TProject>, ProjectId: string) => {
-    if (payload.ownerId) {
-        throw new AppError(500, "You can't change author ID!")
-    }
 
     const isExistProject = await prisma.project.findUnique({
         where: {
